@@ -1,5 +1,6 @@
 require "faraday"
-require "faraday_middleware"
+require "faraday/follow_redirects"
+require "base64"
 require "sendcloud/version"
 
 module Sendcloud
@@ -15,10 +16,12 @@ module Sendcloud
   autoload :ShippingMethodResource, "sendcloud/resources/shipping_method"
   autoload :LabelResource, "sendcloud/resources/label"
   autoload :ServicePointResource, "sendcloud/resources/service_point"
+  autoload :ShipmentResource, "sendcloud/resources/shipment"
 
   autoload :Parcel, "sendcloud/objects/parcel"
   autoload :ParcelStatus, "sendcloud/objects/parcel_status"
   autoload :ShippingMethod, "sendcloud/objects/shipping_method"
   autoload :Label, "sendcloud/objects/label"
   autoload :ServicePoint, "sendcloud/objects/service_point"
+  autoload :Shipment, "sendcloud/objects/shipment"
 end

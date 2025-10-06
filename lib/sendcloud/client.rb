@@ -1,6 +1,6 @@
 module Sendcloud
   class Client
-    BASE_URL = "https://panel.sendcloud.sc/api/v2"
+    BASE_DOMAIN = "https://panel.sendcloud.sc"
 
     attr_reader :api_key, :api_secret, :adapter
 
@@ -25,6 +25,10 @@ module Sendcloud
       ShippingMethodResource.new(self)
     end
 
+    def shipment
+      ShipmentResource.new(self, version: :v3)
+    end
+
     def label
       LabelResource.new(self)
     end
@@ -34,11 +38,23 @@ module Sendcloud
       service_point_client.service_point
     end
 
-    def connection
-      @connection ||= Faraday.new(BASE_URL) do |conn|
-        conn.request :basic_auth, api_key, api_secret
+    def connection(version = :v2)
+      case version.to_sym
+      when :v2 then (@connection_v2 ||= build_connection("#{BASE_DOMAIN}/api/v2"))
+      when :v3 then (@connection_v3 ||= build_connection("#{BASE_DOMAIN}/api/v3"))
+      else
+        raise ArgumentError, "Unsupported version: #{version.inspect}"
+      end
+    end
+
+    private
+
+    def build_connection(base_url)
+      @connection ||= Faraday.new(base_url) do |conn|
+        conn.request :authorization, :AccessToken, api_key
         conn.request :json
         conn.response :json, content_type: "application/json"
+        conn.response :follow_redirects, clear_authorization_header: false
         conn.adapter adapter, @stubs
       end
     end

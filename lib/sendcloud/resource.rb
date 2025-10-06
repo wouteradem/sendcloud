@@ -2,30 +2,35 @@ module Sendcloud
   class Resource
     attr_reader :client
 
-    def initialize(client)
+    def initialize(client, version: :v2)
       @client = client
+      @version = version
     end
 
     private
 
+    def conn
+      @client.connection(@version)
+    end
+
     def get_request(url, params: {}, headers: {})
-      handle_response client.connection.get(url, params, headers)
+      handle_response conn.get(url, params, headers)
     end
 
     def post_request(url, body:, headers: {})
-      handle_response client.connection.post(url, body, headers)
+      handle_response conn.post(url, body, headers)
     end
 
     def patch_request(url, body:, headers: {})
-      handle_response client.connection.patch(url, body, headers)
+      handle_response conn.patch(url, body, headers)
     end
 
     def put_request(url, body:, headers: {})
-      handle_response client.connection.put(url, body, headers)
+      handle_response conn.put(url, body, headers)
     end
 
     def delete_request(url, params: {}, headers: {})
-      handle_response client.connection.delete(url, params, headers)
+      handle_response conn.delete(url, params, headers)
     end
 
     def handle_response(response)

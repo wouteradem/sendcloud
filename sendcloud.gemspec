@@ -5,12 +5,12 @@ require_relative "lib/sendcloud/version"
 Gem::Specification.new do |spec|
   spec.name = "sendcloud-ruby"
   spec.version = Sendcloud::VERSION
-  spec.authors = ["Peter Berkenbosch"]
-  spec.email = ["info@peterberkenbosch.nl"]
+  spec.authors = ["Peter Berkenbosch, Wouter Adem"]
+  spec.email = ["wouter.adem@gmail.com"]
 
   spec.summary = "Ruby client for the Sendcloud API"
   spec.description = spec.summary
-  spec.homepage = "https://github.com/peterberkenbosch/sendcloud"
+  spec.homepage = "https://github.com/wouteradem/sendcloud"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.4.0"
 
@@ -27,8 +27,9 @@ Gem::Specification.new do |spec|
   end
 
   spec.require_paths = ["lib"]
-  spec.add_dependency "faraday"
-  spec.add_dependency "faraday_middleware"
+  spec.add_runtime_dependency "faraday", ">= 2.10", "< 3.0"
+  spec.add_runtime_dependency "faraday-follow_redirects", ">= 0.3", "< 1.0"
+  spec.add_runtime_dependency "base64", ">= 0.2.0"
 
   spec.add_development_dependency "standard"
 end
